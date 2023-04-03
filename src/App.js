@@ -43,6 +43,25 @@ function App() {
 		}
 		return buf;
 	}
+	const sendMessage = (message) => {
+		const message = message;
+		const encoder = new TextEncoder();
+		const data = encoder.encode(message);
+		crypto.subtle
+			.encrypt(
+				{
+					name: "RSA-OAEP",
+				},
+				key,
+				data
+			)
+			.then((encrypted) => {
+				const base64 = window.btoa(
+					String.fromCharCode.apply(null, new Uint8Array(encrypted))
+				);
+				return base64;
+			});
+	};
 	return (
 		<Router>
 			<div className="App">
